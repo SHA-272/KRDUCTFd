@@ -1,3 +1,4 @@
+from flask_babel import lazy_gettext as _l
 from wtforms import PasswordField, StringField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import InputRequired
@@ -15,11 +16,11 @@ from CTFd.forms.users import (
 def RegistrationForm(*args, **kwargs):
     class _RegistrationForm(BaseForm):
         name = StringField(
-            "Имя пользователя", validators=[InputRequired()], render_kw={"autofocus": True}
+            _l("User Name"), validators=[InputRequired()], render_kw={"autofocus": True}
         )
-        email = EmailField("Почта", validators=[InputRequired()])
-        password = PasswordField("Пароль", validators=[InputRequired()])
-        submit = SubmitField("Регистрация")
+        email = EmailField(_l("Email"), validators=[InputRequired()])
+        password = PasswordField(_l("Password"), validators=[InputRequired()])
+        submit = SubmitField(_l("Submit"))
 
         @property
         def extra(self):
@@ -35,27 +36,27 @@ def RegistrationForm(*args, **kwargs):
 
 class LoginForm(BaseForm):
     name = StringField(
-        "Имя пользователя или почта",
+        _l("User Name or Email"),
         validators=[InputRequired()],
         render_kw={"autofocus": True},
     )
-    password = PasswordField("Пароль", validators=[InputRequired()])
-    submit = SubmitField("Вход")
+    password = PasswordField(_l("Password"), validators=[InputRequired()])
+    submit = SubmitField(_l("Submit"))
 
 
 class ConfirmForm(BaseForm):
-    submit = SubmitField("Resend Confirmation Email")
+    submit = SubmitField(_l("Resend Confirmation Email"))
 
 
 class ResetPasswordRequestForm(BaseForm):
     email = EmailField(
-        "Почта", validators=[InputRequired()], render_kw={"autofocus": True}
+        _l("Email"), validators=[InputRequired()], render_kw={"autofocus": True}
     )
-    submit = SubmitField("Сброс")
+    submit = SubmitField(_l("Submit"))
 
 
 class ResetPasswordForm(BaseForm):
     password = PasswordField(
-        "Пароль", validators=[InputRequired()], render_kw={"autofocus": True}
+        _l("Password"), validators=[InputRequired()], render_kw={"autofocus": True}
     )
-    submit = SubmitField("Сброс")
+    submit = SubmitField(_l("Submit"))
