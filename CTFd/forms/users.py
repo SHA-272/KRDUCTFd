@@ -103,8 +103,8 @@ def attach_registration_code_field(form_cls):
             form_cls,
             "registration_code",
             StringField(
-                "Registration Code",
-                description="Registration code required to create account",
+                "Код регистрации",
+                description="Для создания аккаунта требуется код регистрации",
                 validators=[InputRequired()],
             ),
         )
@@ -130,11 +130,11 @@ class UserSearchForm(BaseForm):
 
 class PublicUserSearchForm(BaseForm):
     field = SelectField(
-        "Search Field",
+        "Поле поиска",
         choices=[
-            ("name", "Name"),
-            ("affiliation", "Affiliation"),
-            ("website", "Website"),
+            ("name", "Имя"),
+            ("affiliation", "Связь"),
+            ("website", "Сайт"),
         ],
         default="name",
         validators=[InputRequired()],

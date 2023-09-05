@@ -32,7 +32,7 @@ const graph_configs = {
       const option = {
         title: {
           left: "center",
-          text: "Solve Counts"
+          text: "Количество решений"
         },
         tooltip: {
           trigger: "item"
@@ -48,12 +48,12 @@ const graph_configs = {
           }
         },
         xAxis: {
-          name: "Solve Count",
+          name: "Количество решений",
           nameLocation: "middle",
           type: "value"
         },
         yAxis: {
-          name: "Challenge Name",
+          name: "Название задания",
           nameLocation: "middle",
           nameGap: 60,
           type: "category",
@@ -105,7 +105,7 @@ const graph_configs = {
       let option = {
         title: {
           left: "center",
-          text: "Submission Percentages"
+          text: "Процент отправленного"
         },
         tooltip: {
           trigger: "item"
@@ -121,11 +121,11 @@ const graph_configs = {
           orient: "vertical",
           top: "middle",
           right: 0,
-          data: ["Fails", "Solves"]
+          data: ["Ошибок", "Решений"]
         },
         series: [
           {
-            name: "Submission Percentages",
+            name: "Процент отправленного",
             type: "pie",
             radius: ["30%", "50%"],
             avoidLabelOverlap: false,
@@ -169,12 +169,12 @@ const graph_configs = {
             data: [
               {
                 value: fails,
-                name: "Fails",
+                name: "Ошибки",
                 itemStyle: { color: "rgb(207, 38, 0)" }
               },
               {
                 value: solves,
-                name: "Solves",
+                name: "Решения",
                 itemStyle: { color: "rgb(0, 209, 64)" }
               }
             ]
@@ -209,7 +209,7 @@ const graph_configs = {
       let option = {
         title: {
           left: "center",
-          text: "Category Breakdown"
+          text: "Категории"
         },
         tooltip: {
           trigger: "item"
@@ -230,7 +230,7 @@ const graph_configs = {
         },
         series: [
           {
-            name: "Category Breakdown",
+            name: "Категории",
             type: "pie",
             radius: ["30%", "50%"],
             label: {
@@ -287,12 +287,12 @@ const graph_configs = {
 
   "#solve-percentages-graph": {
     layout: annotations => ({
-      title: "Solve Percentages per Challenge",
+      title: "Процент решений на задание",
       xaxis: {
-        title: "Challenge Name"
+        title: "Имя задания"
       },
       yaxis: {
-        title: "Percentage of {0} (%)".format(
+        title: "Процент {0} (%)".format(
           CTFd.config.userMode.charAt(0).toUpperCase() +
             CTFd.config.userMode.slice(1)
         ),
@@ -327,7 +327,7 @@ const graph_configs = {
       const option = {
         title: {
           left: "center",
-          text: "Solve Percentages per Challenge"
+          text: "Процент решений на задание"
         },
         tooltip: {
           trigger: "item",
@@ -348,7 +348,7 @@ const graph_configs = {
           }
         },
         xAxis: {
-          name: "Challenge Name",
+          name: "Имя задания",
           nameGap: 40,
           nameLocation: "middle",
           type: "category",
@@ -359,7 +359,7 @@ const graph_configs = {
           }
         },
         yAxis: {
-          name: "Percentage of {0} (%)".format(
+          name: "Процент {0} (%)".format(
             CTFd.config.userMode.charAt(0).toUpperCase() +
               CTFd.config.userMode.slice(1)
           ),
@@ -413,14 +413,14 @@ const graph_configs = {
 
   "#score-distribution-graph": {
     layout: annotations => ({
-      title: "Score Distribution",
+      title: "Распределение очков",
       xaxis: {
-        title: "Score Bracket",
+        title: "Очки",
         showticklabels: true,
         type: "category"
       },
       yaxis: {
-        title: "Number of {0}".format(
+        title: "Количество {0}".format(
           CTFd.config.userMode.charAt(0).toUpperCase() +
             CTFd.config.userMode.slice(1)
         )
@@ -454,7 +454,7 @@ const graph_configs = {
       const option = {
         title: {
           left: "center",
-          text: "Score Distribution"
+          text: "Распределение очков"
         },
         tooltip: {
           trigger: "item"
@@ -470,14 +470,14 @@ const graph_configs = {
           }
         },
         xAxis: {
-          name: "Score Bracket",
+          name: "Очки",
           nameGap: 40,
           nameLocation: "middle",
           type: "category",
           data: brackets
         },
         yAxis: {
-          name: "Number of {0}".format(
+          name: "Количество {0}".format(
             CTFd.config.userMode.charAt(0).toUpperCase() +
               CTFd.config.userMode.slice(1)
           ),

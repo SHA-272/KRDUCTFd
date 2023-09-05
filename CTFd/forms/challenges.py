@@ -7,7 +7,7 @@ from CTFd.forms.fields import SubmitField
 
 class ChallengeSearchForm(BaseForm):
     field = SelectField(
-        "Search Field",
+        "Поле поиска",
         choices=[
             ("name", "Name"),
             ("id", "ID"),

@@ -11,14 +11,14 @@ from CTFd.utils.user import get_current_user
 
 def SettingsForm(*args, **kwargs):
     class _SettingsForm(BaseForm):
-        name = StringField("User Name")
-        email = StringField("Email")
-        password = PasswordField("Password")
-        confirm = PasswordField("Current Password")
-        affiliation = StringField("Affiliation")
-        website = URLField("Website")
-        country = SelectField("Country", choices=SELECT_COUNTRIES_LIST)
-        submit = SubmitField("Submit")
+        name = StringField("Имя пользователя")
+        email = StringField("Почта")
+        password = PasswordField("Пароль")
+        confirm = PasswordField("Текущий пароль")
+        affiliation = StringField("Связь")
+        website = URLField("Сайт")
+        country = SelectField("Страна", choices=SELECT_COUNTRIES_LIST)
+        submit = SubmitField("Изменить")
 
         @property
         def extra(self):
