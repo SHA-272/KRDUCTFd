@@ -31,7 +31,8 @@ services:
     restart: always
     volumes:
       - ./conf/nginx/http.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt/live/krductf.ru:/certificates:ro
+      - /etc/letsencrypt/live/krductf.ru/privkey.pem:/certificates/privkey.pem:ro
+      - /etc/letsencrypt/live/krductf.ru/fullchain.pem:/certificates/fullchain.pem:ro
     ports:
       - 80:80
       - 443:443
