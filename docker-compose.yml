@@ -26,22 +26,6 @@ services:
       ctfnet:
         ipv4_address: 10.0.0.10
 
-  nginx:
-    image: nginx:stable
-    restart: always
-    volumes:
-      - ./conf/nginx/http.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt/live/krductf.ru/privkey.pem:/certificates/privkey.pem:ro
-      - /etc/letsencrypt/live/krductf.ru/fullchain.pem:/certificates/fullchain.pem:ro
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      ctfnet:
-        ipv4_address: 10.0.0.2
-    depends_on:
-      - ctfd
-
   db:
     image: mariadb:10.4.12
     restart: always
