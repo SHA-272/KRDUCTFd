@@ -7,6 +7,7 @@ class Languages(str, RawEnum):
     POLISH = "pl"
     SPANISH = "es"
     CHINESE = "zh"
+    RUSSIAN = "ru"
 
 
 LANGUAGE_NAMES = {
@@ -15,6 +16,7 @@ LANGUAGE_NAMES = {
     "pl": "Polski",
     "es": "Español",
     "zh": "中文",
+    "ru": "Русский",
 }
 
 SELECT_LANGUAGE_LIST = [("", "")] + [
