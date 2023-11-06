@@ -1,6 +1,6 @@
 from typing import List  # noqa: I001
 
-from flask import abort, render_template, request, url_for
+from flask import abort, render_template, request, url_for, current_app
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 
@@ -17,6 +17,7 @@ from CTFd.plugins.challenges import CHALLENGE_CLASSES, get_chal_class
 from CTFd.schemas.challenges import ChallengeSchema
 from CTFd.schemas.flags import FlagSchema
 from CTFd.schemas.hints import HintSchema
+from CTFd.schemas.notifications import NotificationSchema
 from CTFd.schemas.tags import TagSchema
 from CTFd.utils import config, get_config
 from CTFd.utils import user as current_user
@@ -621,6 +622,36 @@ class ChallengeAttempt(Resource):
             status, message = chal_class.attempt(challenge, request)
             if status:  # The challenge plugin says the input is right
                 if ctftime() or current_user.is_admin():
+                    # Проверка, что это первое решение для этого задания
+                    first_blood = not Solves.query.filter_by(challenge_id=challenge_id).first()
+                    if first_blood:
+                        # Активировать функцию firstblood
+                        data = {
+                            "title": "Первая кровь!", 
+                            "content": f""""{user.name}" первым решил задание "{challenge.name}"!""", 
+                            "type": "toast", 
+                            "sound": True
+                            }
+                        
+                        schema = NotificationSchema()
+                        result = schema.load(data)
+
+                        if result.errors:
+                            return {"success": False, "errors": result.errors}, 400
+
+                        db.session.add(result.data)
+                        db.session.commit()
+
+                        response = schema.dump(result.data)
+
+                        # Grab additional settings
+                        notif_type = data.get("type", "alert")
+                        notif_sound = data.get("sound", True)
+                        response.data["type"] = notif_type
+                        response.data["sound"] = notif_sound
+
+                        current_app.events_manager.publish(data=response.data, type="notification")
+
                     chal_class.solve(
                         user=user, team=team, challenge=challenge, request=request
                     )
