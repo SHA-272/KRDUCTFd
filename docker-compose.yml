@@ -16,6 +16,9 @@ services:
       - ACCESS_LOG=/var/log/CTFd/access.log
       - ERROR_LOG=/var/log/CTFd/error.log
       - REVERSE_PROXY=true
+      - BOT_TOKEN=
+      - CHANNEL_ID=
+      - ADMIN_ID=
     volumes:
       - .data/CTFd/logs:/var/log/CTFd
       - .data/CTFd/uploads:/var/uploads
@@ -40,7 +43,14 @@ services:
       ctfnet:
         ipv4_address: 10.0.0.11
     # This command is required to set important mariadb defaults
-    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+    command:
+      [
+        mysqld,
+        --character-set-server=utf8mb4,
+        --collation-server=utf8mb4_unicode_ci,
+        --wait_timeout=28800,
+        --log-warnings=0
+      ]
 
   cache:
     image: redis:4
@@ -53,4 +63,4 @@ services:
 
 networks:
   ctfnet:
-     external: true
+    external: true

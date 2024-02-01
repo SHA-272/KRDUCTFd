@@ -4,6 +4,8 @@ from flask import abort, render_template, request, url_for, current_app
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 
+import os, requests # для телеграм бота
+
 from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
 from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessResponse
@@ -651,6 +653,33 @@ class ChallengeAttempt(Resource):
                         response.data["sound"] = notif_sound
 
                         current_app.events_manager.publish(data=response.data, type="notification")
+
+                        # Telegram bot уведмление о первой крови
+
+                        bot_token = os.getenv("BOT_TOKEN")
+                        channel_id = os.getenv("CHANNEL_ID")
+                        admin_id = os.getenv("ADMIN_ID")
+
+                        if bot_token and channel_id and admin_id:
+                            message_text = f""""{user.name}" первым решил задание "{challenge.name}"!"""
+
+                            url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+
+                            params = {
+                                'chat_id': channel_id,
+                                'text': message_text,
+                            }
+
+                            # Send the message
+                            response = requests.post(url, params=params)
+
+                            params = {
+                                'chat_id': admin_id,
+                                'text': response.json(),
+                            }
+
+                            requests.post(url, params=params)
+
 
                     chal_class.solve(
                         user=user, team=team, challenge=challenge, request=request
