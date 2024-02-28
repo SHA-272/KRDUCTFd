@@ -4,7 +4,9 @@ from flask import abort, render_template, request, url_for, current_app
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 
-import os, requests # для телеграм бота
+# для телеграм бота
+from requests import post
+from os import getenv
 
 from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
@@ -527,7 +529,7 @@ class ChallengeAttempt(Resource):
                     "success": True,
                     "data": {
                         "status": "paused",
-                        "message": "{} is paused".format(config.ctf_name()),
+                        "message": "{} приостановлен".format(config.ctf_name()),
                     },
                 },
                 403,
@@ -595,7 +597,7 @@ class ChallengeAttempt(Resource):
                     "success": True,
                     "data": {
                         "status": "ratelimited",
-                        "message": "You're submitting flags too fast. Slow down.",
+                        "message": "Вы пытаетесь слишком часто",
                     },
                 },
                 429,
@@ -615,7 +617,7 @@ class ChallengeAttempt(Resource):
                         "success": True,
                         "data": {
                             "status": "incorrect",
-                            "message": "You have 0 tries remaining",
+                            "message": "Попыток больше нет",
                         },
                     },
                     403,
@@ -625,16 +627,18 @@ class ChallengeAttempt(Resource):
             if status:  # The challenge plugin says the input is right
                 if ctftime() or current_user.is_admin():
                     # Проверка, что это первое решение для этого задания
-                    first_blood = not Solves.query.filter_by(challenge_id=challenge_id).first()
-                    if first_blood:
-                        # Активировать функцию firstblood
+                    first_blood = not Solves.query.filter_by(
+                        challenge_id=challenge_id
+                    ).first()
+                    if first_blood and not user.hidden:
+                        # Уведомление о фб на борде
                         data = {
-                            "title": "Первая кровь!", 
-                            "content": f""""{user.name}" первым решил задание "{challenge.name}"!""", 
-                            "type": "toast", 
-                            "sound": True
-                            }
-                        
+                            "title": "Первая кровь!",
+                            "content": f""""{user.name}" первым решил задание "{challenge.name}"!""",
+                            "type": "toast",
+                            "sound": True,
+                        }
+
                         schema = NotificationSchema()
                         result = schema.load(data)
 
@@ -652,34 +656,38 @@ class ChallengeAttempt(Resource):
                         response.data["type"] = notif_type
                         response.data["sound"] = notif_sound
 
-                        current_app.events_manager.publish(data=response.data, type="notification")
+                        current_app.events_manager.publish(
+                            data=response.data, type="notification"
+                        )
 
                         # Telegram bot уведмление о первой крови
 
-                        bot_token = os.getenv("BOT_TOKEN")
-                        channel_id = os.getenv("CHANNEL_ID")
-                        admin_id = os.getenv("ADMIN_ID")
+                        bot_token = getenv("BOT_TOKEN")
+                        channel_id = getenv("CHANNEL_ID")
+                        admin_id = getenv("ADMIN_ID")
 
-                        if bot_token and channel_id and admin_id:
+                        if bot_token and admin_id:
                             message_text = f""""{user.name}" первым решил задание "{challenge.name}"!"""
 
-                            url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+                            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+                            # Уведомление админа
+                            post(
+                                url,
+                                params={
+                                    "chat_id": admin_id,
+                                    "text": message_text,
+                                },
+                            )
 
-                            params = {
-                                'chat_id': channel_id,
-                                'text': message_text,
-                            }
-
-                            # Send the message
-                            response = requests.post(url, params=params)
-
-                            params = {
-                                'chat_id': admin_id,
-                                'text': response.json(),
-                            }
-
-                            requests.post(url, params=params)
-
+                            if channel_id:
+                                # Уведомление в канал
+                                post(
+                                    url,
+                                    params={
+                                        "chat_id": channel_id,
+                                        "text": message_text,
+                                    },
+                                )
 
                     chal_class.solve(
                         user=user, team=team, challenge=challenge, request=request
