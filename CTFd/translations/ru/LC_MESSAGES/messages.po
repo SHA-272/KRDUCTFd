@@ -699,7 +699,7 @@ msgstr "Управление видимостью различных разде�
 
 #: CTFd/themes/core-beta/templates/teams/private.html:8
 msgid "Edit Team"
-msgstr "Команда редакторов"
+msgstr "Изменить Команду"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:76
 msgid "Your team's profile has been updated"
@@ -707,15 +707,15 @@ msgstr "Профиль вашей команды был обновлен"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:104
 msgid "Choose Captain"
-msgstr "Выберите капитана"
+msgstr "Выберите Капитана"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:127
 msgid "Your captain rights have been transferred"
-msgstr "Ваши капитанские права были переданы"
+msgstr "Ваши права капитана были переданы"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:152
 msgid "Invite Users"
-msgstr "Пригласить пользователей"
+msgstr "Пригласить Пользователей"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:171
 msgid "Share this link with your team members for them to join your team"
@@ -723,11 +723,11 @@ msgstr "Поделитесь этой ссылкой с членами свое�
 
 #: CTFd/themes/core-beta/templates/teams/private.html:174
 msgid "Invite links can be re-used and expire after 1 day"
-msgstr "Ссылки на приглашения могут быть использованы повторно и истекают через 1 день"
+msgstr "Ссылки приглашения могут быть использованы повторно и истекают через 1 день"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:188
 msgid "Disband Team"
-msgstr "Расформировать команду"
+msgstr "Распустить Команду"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:193
 msgid "Are you sure you want to disband your team?"
@@ -747,17 +747,17 @@ msgstr "место"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:258
 msgid "points"
-msgstr "пункты"
+msgstr "очки"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:315
 #: CTFd/themes/core-beta/templates/teams/public.html:81
 msgid "Members"
-msgstr "Члены"
+msgstr "Участники"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:320
 #: CTFd/themes/core-beta/templates/teams/public.html:86
 msgid "Score"
-msgstr "Оценка"
+msgstr "Очки"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:332
 msgid "Captain"
