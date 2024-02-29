@@ -633,9 +633,10 @@ class ChallengeAttempt(Resource):
                     ).first()
                     if first_blood and not user.hidden:
                         # Уведомление о фб на борде
+                        text = f'Первое решение задания "{challenge.name}" от "{team.name if team else user.name}"!'
                         data = {
                             "title": "Первая кровь!",
-                            "content": f""""{user.name}" первым решил задание "{challenge.name}"!""",
+                            "content": text,
                             "type": "toast",
                             "sound": True,
                         }
@@ -668,15 +669,13 @@ class ChallengeAttempt(Resource):
                         admin_id = getenv("ADMIN_ID")
 
                         if bot_token and admin_id:
-                            message_text = f""""{user.name}" первым решил задание "{challenge.name}"!"""
-
                             url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
                             # Уведомление админа
                             post(
                                 url,
                                 params={
                                     "chat_id": admin_id,
-                                    "text": message_text,
+                                    "text": text,
                                 },
                             )
 
@@ -686,7 +685,7 @@ class ChallengeAttempt(Resource):
                                     url,
                                     params={
                                         "chat_id": channel_id,
-                                        "text": message_text,
+                                        "text": text,
                                     },
                                 )
 
