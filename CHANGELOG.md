@@ -1,3 +1,39 @@
+# 3.7.3 / 2024-07-24
+
+**Security**
+
+- Fix issue where challenge solves and account names could be seen despite accounts not being visible
+
+**Admin Panel**
+
+- Add a Localization section in the Config Panel
+- Add the Default Language config in the Admin Panel to allow admins to configure a default language
+  - Previously CTFd would default to an auto-detected language specified by the user's browser. This setting allows for that default to be set by the admin instead of auto-detected.
+
+**Translations**
+
+- Fix issue where Simplified Chinese would be used instead of Traditional Chinese
+- Update the language names for Simplified Chinese and Traditional Chinese for clarity
+- Update Vietnamese translation
+- Add Catalan translation
+
+# 3.7.2 / 2024-06-18
+
+**Security**
+
+- Patches an issue where on certain browsers flags could be leaked with admin interaction on a malicious page
+
+**API**
+
+- Disable returning 404s in listing pages with pagination
+  - Instead of returning 404 these pages will now return 200
+  - For API endpoints, the response will be a 200 with an empty listing instead of a 404
+
+**Deployment**
+
+- CTFd will now add the `Cross-Origin-Opener-Policy` response header to all responses with the default value of `same-origin-allow-popups`
+- Add `CROSS_ORIGIN_OPENER_POLICY` setting to control the `Cross-Origin-Opener-Policy` header
+
 # 3.7.1 / 2024-05-31
 
 **Admin Panel**
