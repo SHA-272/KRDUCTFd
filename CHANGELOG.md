@@ -1,3 +1,62 @@
+# 3.7.5 / 2024-12-27
+
+**Security**
+
+- Change confirmation and reset password emails to be single use instead of only expiring in 30 minutes
+
+**General**
+
+- Fix issue where users could set their own bracket after registration
+- If a user or team do not have a password set we allow setting a password without providing a previous password confirmation
+- Fix issue where dynamic challenges did not return their attribution over the API
+- Language selection is now available in the main theme navigation bar
+
+**Admin Panel**
+
+- A point breakdown graph showing the amount of challenge points allocated to each category has been added to the Admin Panel
+- Bracket ID and Bracket Name have been added to CSV scoreboard exports
+- Fix issue with certain interactions in the Media Library
+
+**API**
+
+- Swagger specification has been updated to properly validate
+- `/api/v1/flags/types` and `/api/v1/flags/types/<type_name>` have been seperated into two seperate controllers
+
+**Deployment**
+
+- IP Tracking has been updated to only occur if we have not seen the IP before or on state changing methods
+- Bump dependencies for `cmarkgfm` and `jinja2`
+
+# 3.7.4 / 2024-10-08
+
+**Security**
+
+- Validate email length to be less than 320 chars to prevent Denial of Service in email validation
+
+**General**
+
+- Add attribution field to Challenges
+
+**Admin Panel**
+
+- Display brackets in the Admin Panel
+
+**Themes**
+
+- Display brackets for users/teams on listing pages and public/private pages
+- Fix miscellaneous issues in core-beta
+- Adds dark mode to core-beta theme
+- Fix issue with long titles in challenge buttons
+- Adds `type` and `extra` arguments to `Assets.js()` and default `defer` to `False` as `type="module"` automatically implies defer
+- ECharts behavior for some graphs in core-beta can now be overriden using the following window objects `window.scoreboardChartOptions`, `window.teamScoreGraphChartOptions`, `window.userScoreGraphChartOptions`
+- Update the scoreboard score graph to reflect the current active bracket changes
+
+**Deployment**
+
+- Add `.gitattributes` to keep LF line endings on .sh files under Windows
+- Fix issues where None values are not cast to empty string
+- Bump dependencies for `pybluemonday`, `requests`, and `boto3`
+
 # 3.7.3 / 2024-07-24
 
 **Security**
