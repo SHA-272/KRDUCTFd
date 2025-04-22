@@ -1,6 +1,6 @@
 from typing import List  # noqa: I001
 
-from flask import abort, render_template, request, url_for, current_app
+from flask import abort, render_template, request, url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 
@@ -25,7 +25,6 @@ from CTFd.plugins.challenges import CHALLENGE_CLASSES, get_chal_class
 from CTFd.schemas.challenges import ChallengeSchema
 from CTFd.schemas.flags import FlagSchema
 from CTFd.schemas.hints import HintSchema
-from CTFd.schemas.notifications import NotificationSchema
 from CTFd.schemas.tags import TagSchema
 from CTFd.utils import config, get_config
 from CTFd.utils import user as current_user
@@ -642,68 +641,6 @@ class ChallengeAttempt(Resource):
             status, message = chal_class.attempt(challenge, request)
             if status:  # The challenge plugin says the input is right
                 if ctftime() or current_user.is_admin():
-                    # Проверка, что это первое решение для этого задания
-                    first_blood = not Solves.query.filter_by(
-                        challenge_id=challenge_id
-                    ).first()
-                    if first_blood and not user.hidden:
-                        # Уведомление о фб на борде
-                        text = f'Первое решение задания "{challenge.name}" от "{team.name if team else user.name}"!'
-                        data = {
-                            "title": "Первая кровь!",
-                            "content": text,
-                            "type": "toast",
-                            "sound": True,
-                        }
-
-                        schema = NotificationSchema()
-                        result = schema.load(data)
-
-                        if result.errors:
-                            return {"success": False, "errors": result.errors}, 400
-
-                        db.session.add(result.data)
-                        db.session.commit()
-
-                        response = schema.dump(result.data)
-
-                        # Grab additional settings
-                        notif_type = data.get("type", "alert")
-                        notif_sound = data.get("sound", True)
-                        response.data["type"] = notif_type
-                        response.data["sound"] = notif_sound
-
-                        current_app.events_manager.publish(
-                            data=response.data, type="notification"
-                        )
-
-                        # Telegram bot уведмление о первой крови
-
-                        bot_token = getenv("BOT_TOKEN")
-                        channel_id = getenv("CHANNEL_ID")
-                        admin_id = getenv("ADMIN_ID")
-
-                        if bot_token and admin_id:
-                            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-                            # Уведомление админа
-                            post(
-                                url,
-                                params={
-                                    "chat_id": admin_id,
-                                    "text": text,
-                                },
-                            )
-
-                            if channel_id:
-                                # Уведомление в канал
-                                post(
-                                    url,
-                                    params={
-                                        "chat_id": channel_id,
-                                        "text": text,
-                                    },
-                                )
-
                     chal_class.solve(
                         user=user, team=team, challenge=challenge, request=request
                     )
