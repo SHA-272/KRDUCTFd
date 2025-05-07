@@ -1,0 +1,6 @@
+[submodule "CTFd/plugins/CTFd_notify"]
+	path = CTFd/plugins/CTFd_notify
+	url = https://github.com/SHA-272/CTFd_notify.git
+[submodule "CTFd/themes/KRDUCTFtheme2"]
+	path = CTFd/themes/KRDUCTFtheme2
+	url = https://github.com/SHA-272/KRDUCTFtheme2.git
